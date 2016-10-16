@@ -7,5 +7,7 @@ public class Starter {
         grid.updateGrid(7, "B");
         grid.updateGrid(8, "☺");
         grid.printGrid();
+        grid.updateGrid(1, "A");
+        grid.printGrid();
     }
 }

@@ -15,6 +15,11 @@ public class Grid {
         }
     }
 
+    public Grid(String[] startingState) {
+        gridArray = startingState;
+    }
+
+
     protected void updateGrid(int index, String tileProperty) {
         gridArray[index] = tileProperty;
     }
