@@ -15,13 +15,15 @@ public class Grid {
         }
     }
 
-    public Grid(String[] startingState) {
+    public Grid(String[] startingState, int dimension) {
         gridArray = startingState;
+        length = dimension;
+        width = dimension;
     }
 
 
-    protected void updateGrid(int index, String tileProperty) {
-        gridArray[index] = tileProperty;
+    protected void updateGrid(String[] newState) {
+        gridArray = newState;
     }
 
     protected void printGrid() {
@@ -34,4 +36,10 @@ public class Grid {
             System.out.println("\n");
         }
     }
+
+//    protected void printGrid() {
+//        for (int i = 0; i < gridArray.length ; i++) {
+//
+//        }
+//    }
 }
