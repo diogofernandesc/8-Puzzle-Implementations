@@ -20,7 +20,7 @@ public class BreadthFirstSearch {
         this.grid = grid;
         this.agentIndex = agentIndex;
         this.gridDimension = gridDimension;
-        System.out.println(Arrays.toString(startState));
+        //System.out.println(Arrays.toString(startState));
 
     }
 
@@ -95,6 +95,7 @@ public class BreadthFirstSearch {
 
     protected String[] generateState(String direction, String[] currentState) {
 
+        //System.out.println("Agent index before: "+ agentIndex);
         int moveDifference = 0;
         String[] newState = currentState.clone();
 
@@ -111,43 +112,64 @@ public class BreadthFirstSearch {
         } else if (direction.equals("d")) {
             moveDifference = gridDimension;
         }
-
+        //System.out.println("Direction: " + direction + " - move difference: " + moveDifference);
         String temp = newState[agentIndex];
+        //System.out.println("agent index value before is: " + temp);
+        //System.out.println("block of move is: " + newState[agentIndex + moveDifference]);
         newState[agentIndex] = newState[agentIndex + moveDifference];    // Left is one index less on the state
-        newState[agentIndex - 1] = temp;
+        newState[agentIndex + moveDifference] = temp;
 
+       // System.out.println();
+        //System.out.println("Agent index value after is " + newState[agentIndex]);
+        //System.out.println("Block index value after is " + newState[agentIndex + moveDifference]);
+       // System.out.println("------");
+
+
+        //System.out.println(agentIndex);
+
+        //System.out.println("Agent index after: "+ agentIndex);
         return newState;
+    }
+
+    protected void agentMove(String direction) {
+        agentIndex = agentIndex + moveDifference;
+
     }
 
 
     protected void compute() {
 
+        String[] currentState;
+
         // Checks if the initial state and the final state are the same
         if (Arrays.equals(startState, goalState)) {
-            this.grid.printGrid();
+            this.grid.printGrid(agentIndex);
             return;
         }
 
         //visitedStates = new ArrayList<String[]>();
         stateQueue = new LinkedList<String[]>();
-        grid.printGrid();
+        //grid.printGrid();
 
         stateQueue.add(this.startState);
         //visitedStates.add(startingState);
 
         while(!stateQueue.isEmpty()) {
 
-            String[] currentState = stateQueue.remove();
+            currentState = stateQueue.remove();
             System.out.println("---------------");
-            grid.updateGrid(currentState);
-            grid.printGrid();
-
+            //grid.updateGrid(currentState);
+            //grid.printGrid(agentIndex);
+            //System.out.println(Arrays.toString(currentState));
+            //System.out.println(agentIndex);
             if (Arrays.equals(currentState, goalState)) {
+                System.out.println("FINISHED");
                 break;
 
             } else {
 
                 String[] directions = getDirections().split(", ");
+                System.out.println(getDirections());
                 for (String direction : directions) {
                     stateQueue.add(generateState(direction, currentState));
                 }

@@ -26,11 +26,15 @@ public class Grid {
         gridArray = newState;
     }
 
-    protected void printGrid() {
+    protected void printGrid(int agentIndex) {
         int gridTile = 0;
         for(int i = 0; i < length; i++) {
             for(int j = 0; j < width; j++) {
-                System.out.print(" " + gridArray[gridTile] + " ");
+                if (gridTile == agentIndex) {
+                    System.out.print(" " + "㋛" + " ");
+                } else {
+                    System.out.print(" " + gridArray[gridTile] + " ");
+                }
                 gridTile++;
             }
             System.out.println("\n");
