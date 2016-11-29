@@ -3,22 +3,20 @@ import java.util.*;
 public class BreadthFirstSearch {
 
     int tile;
-    String[] startState;
+    Node startNode;
     String[] goalState;
     Grid grid;
-    ArrayList<String[]> visitedStates;
-    Queue<String[]> stateQueue;
+    Queue<Node> stateQueue;
     Random random;
-    int agentIndex;
     int gridDimension;
 
 
-    public BreadthFirstSearch(String[] startState, String[] goalState, Grid grid, int agentIndex, int gridDimension) {
-        this.startState = startState;
+
+    public BreadthFirstSearch(Node startNode, String[] goalState, Grid grid, int gridDimension) {
+        this.startNode = startNode;
         this.goalState = goalState;
         random = new Random();
         this.grid = grid;
-        this.agentIndex = agentIndex;
         this.gridDimension = gridDimension;
         //System.out.println(Arrays.toString(startState));
 
@@ -57,7 +55,7 @@ public class BreadthFirstSearch {
 //    }
 
     // Determines all the possible moving directions
-    protected String getDirections() {
+    protected String getDirections(int agentIndex) {
         String directions = null;
 
         if (gridDimension == 3) {
@@ -93,12 +91,14 @@ public class BreadthFirstSearch {
         return directions;
     }
 
-    protected String[] generateState(String direction, String[] currentState) {
+    protected Node generateNode(String direction, Node currentNode) {
 
         //System.out.println("Agent index before: "+ agentIndex);
         int moveDifference = 0;
-        String[] newState = currentState.clone();
+        String[] newState = currentNode.getState();
 
+        int agentIndex = currentNode.getAgentIndex();
+        System.out.println("Agent index is: " + agentIndex);
         // The move difference for up and down is the grid dimension
         if (direction.equals("l")) {
             moveDifference = -1;
@@ -112,66 +112,70 @@ public class BreadthFirstSearch {
         } else if (direction.equals("d")) {
             moveDifference = gridDimension;
         }
-        //System.out.println("Direction: " + direction + " - move difference: " + moveDifference);
+        System.out.println("Direction: " + direction + " - move difference: " + moveDifference);
         String temp = newState[agentIndex];
-        //System.out.println("agent index value before is: " + temp);
-        //System.out.println("block of move is: " + newState[agentIndex + moveDifference]);
+//        System.out.println("agent index value before is: " + temp);
+//        System.out.println("block of move is: " + newState[agentIndex + moveDifference]);
         newState[agentIndex] = newState[agentIndex + moveDifference];    // Left is one index less on the state
         newState[agentIndex + moveDifference] = temp;
 
-       // System.out.println();
-        //System.out.println("Agent index value after is " + newState[agentIndex]);
-        //System.out.println("Block index value after is " + newState[agentIndex + moveDifference]);
-       // System.out.println("------");
+//        System.out.println();
+//        System.out.println("Agent index value after is " + newState[agentIndex]);
+//        System.out.println("Block index value after is " + newState[agentIndex + moveDifference]);
+//        System.out.println("------");
 
-
-        //System.out.println(agentIndex);
+        agentIndex = agentIndex + moveDifference;
+        System.out.println("Agent index after is: " + agentIndex);
 
         //System.out.println("Agent index after: "+ agentIndex);
-        return newState;
+        return new Node(newState, agentIndex);
     }
 
-    protected void agentMove(String direction) {
-        agentIndex = agentIndex + moveDifference;
-
-    }
 
 
     protected void compute() {
 
         String[] currentState;
 
+        Node currentNode = this.startNode;
+
         // Checks if the initial state and the final state are the same
-        if (Arrays.equals(startState, goalState)) {
-            this.grid.printGrid(agentIndex);
+        if (Arrays.equals(startNode.getState(), goalState)) {
+            this.grid.printGrid(currentNode.getAgentIndex());
             return;
         }
 
         //visitedStates = new ArrayList<String[]>();
-        stateQueue = new LinkedList<String[]>();
+        stateQueue = new LinkedList<Node>();
         //grid.printGrid();
 
-        stateQueue.add(this.startState);
+        stateQueue.add(currentNode);
         //visitedStates.add(startingState);
 
         while(!stateQueue.isEmpty()) {
 
-            currentState = stateQueue.remove();
+            currentNode = stateQueue.remove();
             System.out.println("---------------");
-            //grid.updateGrid(currentState);
-            //grid.printGrid(agentIndex);
-            //System.out.println(Arrays.toString(currentState));
+            grid.updateGrid(currentNode.getState());
+            grid.printGrid(currentNode.getAgentIndex());
+            System.out.println("ACTUAL AGENT INDEX IS: " + currentNode.getAgentIndex());
+            System.out.println("-------");
+            System.out.println(Arrays.toString(currentNode.getState()));
+            System.out.println("-------");
+//            for (Node node : stateQueue) {
+//                System.out.println(Arrays.toString(node.getState()));
+//            }
             //System.out.println(agentIndex);
-            if (Arrays.equals(currentState, goalState)) {
+            if (Arrays.equals(currentNode.getState(), goalState)) {
                 System.out.println("FINISHED");
                 break;
 
             } else {
 
-                String[] directions = getDirections().split(", ");
-                System.out.println(getDirections());
+                String[] directions = getDirections(currentNode.getAgentIndex()).split(", ");
                 for (String direction : directions) {
-                    stateQueue.add(generateState(direction, currentState));
+                    //System.out.println(direction);
+                    stateQueue.add(generateNode(direction, currentNode));
                 }
 
             }
