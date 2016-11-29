@@ -86,7 +86,54 @@ public class BreadthFirstSearch {
             }
 
         } else if (gridDimension == 4) {
-            
+            if (agentIndex == 0) {
+                directions = "r, d";
+
+            } else if (agentIndex == 1) {
+                directions = "l, r, d";
+
+            } else if (agentIndex == 2) {
+                directions = "l, r, d";
+
+            } else if (agentIndex == 3) {
+                directions = "l, d";
+
+            } else if (agentIndex == 4) {
+                directions = "r, u, d";
+
+            } else if (agentIndex == 5) {
+                directions = "l, r, u, d";
+
+            } else if (agentIndex == 6) {
+                directions = "l, r, u, d";
+
+            } else if (agentIndex == 7) {
+                directions = "l, u, d";
+
+            } else if (agentIndex == 8) {
+                directions = "r, u, d";
+
+            } else if (agentIndex == 9) {
+                directions = "l, r, u, d";
+
+            } else if (agentIndex == 10) {
+                directions = "l, r, u, d";
+
+            } else if (agentIndex == 11) {
+                directions = "l, u, d";
+
+            } else if (agentIndex == 12) {
+                directions = "r, u";
+
+            } else if (agentIndex == 13) {
+                directions = "l, r, u";
+
+            } else if (agentIndex == 14) {
+                directions = "l, r, u";
+
+            } else if (agentIndex == 15) {
+                directions = "l, u";
+            }
         }
 
         return directions;
@@ -179,16 +226,16 @@ public class BreadthFirstSearch {
 
                 String[] directions = getDirections(currentNode.getAgentIndex()).split(", ");
                 for (String direction : directions) {
-                    //System.out.println(direction);
                     stateQueue.add(generateNode(direction, currentNode));
                     noOfNodesExpanded++;
+                    System.out.println("Number of nodes expanded so far: " + noOfNodesExpanded);
                 }
 
             }
 
         }
 
-        System.out.println("Number of nodes expanded: " + noOfNodesExpanded);
+        System.out.println("Final number of nodes expanded: " + noOfNodesExpanded);
     }
 
 }

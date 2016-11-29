@@ -62,6 +62,55 @@ public class DepthFirstSearch {
             } else if (agentIndex == 8) {
                 directions = new String[]{"l", "u"};
             }
+        } else if (gridDimension == 4) {
+            if (agentIndex == 0) {
+                directions = new String[]{"r", "d"};
+
+            } else if (agentIndex == 1) {
+                directions = new String[]{"l", "r", "d"};
+
+            } else if (agentIndex == 2) {
+                directions = new String[]{"l", "r", "d"};
+
+            } else if (agentIndex == 3) {
+                directions = new String[]{"l", "d"};
+
+            } else if (agentIndex == 4) {
+                directions = new String[]{"r", "u", "d"};
+
+            } else if (agentIndex == 5) {
+                directions = new String[]{"l", "r", "u", "d"};
+
+            } else if (agentIndex == 6) {
+                directions = new String[]{"l", "r", "u", "d"};
+
+            } else if (agentIndex == 7) {
+                directions = new String[]{"l", "u", "d"};
+
+            } else if (agentIndex == 8) {
+                directions = new String[]{"r", "u", "d"};
+
+            } else if (agentIndex == 9) {
+                directions = new String[]{"l", "r", "u", "d"};
+
+            } else if (agentIndex == 10) {
+                directions = new String[]{"l", "r", "u", "d"};
+
+            } else if (agentIndex == 11) {
+                directions = new String[]{"l", "u", "d"};
+
+            } else if (agentIndex == 12) {
+                directions = new String[]{"r", "u"};
+
+            } else if (agentIndex == 13) {
+                directions = new String[]{"l", "r", "u"};
+
+            } else if (agentIndex == 14) {
+                directions = new String[]{"l", "r", "u"};
+
+            } else if (agentIndex == 15) {
+                directions = new String[]{"l", "u"};
+            }
         }
         List<String> directionsList = Arrays.asList(directions);
         Collections.shuffle(directionsList); // Shuffle the listen to randomise order
@@ -153,15 +202,15 @@ public class DepthFirstSearch {
 
                 List<String> directions = getDirections(currentNode.getAgentIndex());
                 for (String direction : directions) {
-                    //System.out.println(direction);
                     stateStack.add(generateNode(direction, currentNode));
                     noOfNodesExpanded++;
+                    System.out.println("Number of nodes expanded so far: " + noOfNodesExpanded);
                 }
 
             }
 
         }
 
-        System.out.println("Number of nodes expanded: " + noOfNodesExpanded);
+        System.out.println("Final number of nodes expanded: " + noOfNodesExpanded);
     }
 }
