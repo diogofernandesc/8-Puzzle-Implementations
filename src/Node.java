@@ -5,10 +5,17 @@ public class Node {
 
     String[] state;
     int agentIndex;
+    int depth;
 
     public Node(String[] state, int agentIndex) {
         this.state = state;
         this.agentIndex = agentIndex;
+    }
+
+    public Node(String[] state, int agentIndex, int depth) {
+        this.state = state;
+        this.agentIndex = agentIndex;
+        this.depth = depth;
     }
 
     public String[] getState() {
@@ -17,6 +24,10 @@ public class Node {
 
     public int getAgentIndex() {
         return agentIndex;
+    }
+
+    public int getDepth() {
+        return depth;
     }
 
 }
