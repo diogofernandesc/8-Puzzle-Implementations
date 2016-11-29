@@ -12,6 +12,8 @@ public class Starter {
         Grid grid = new Grid(startingState, 3);
 
         BreadthFirstSearch bfs = new BreadthFirstSearch(startNode, goalState, grid, 3);
-        bfs.compute();
+        DepthFirstSearch dfs = new DepthFirstSearch(startNode, goalState, grid, 3);
+        //bfs.compute();
+        dfs.compute();
     }
 }

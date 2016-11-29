@@ -2,20 +2,18 @@ import java.util.*;
 
 public class BreadthFirstSearch {
 
-    int tile;
     Node startNode;
     String[] goalState;
     Grid grid;
     Queue<Node> stateQueue;
-    Random random;
     int gridDimension;
+    int noOfNodesExpanded;
 
 
 
     public BreadthFirstSearch(Node startNode, String[] goalState, Grid grid, int gridDimension) {
         this.startNode = startNode;
         this.goalState = goalState;
-        random = new Random();
         this.grid = grid;
         this.gridDimension = gridDimension;
         //System.out.println(Arrays.toString(startState));
@@ -66,7 +64,7 @@ public class BreadthFirstSearch {
                 directions = "l, r, d";
 
             } else if (agentIndex == 2) {
-                directions = "r, d";
+                directions = "l, d";
 
             } else if (agentIndex == 3) {
                 directions = "r, u, d";
@@ -86,19 +84,23 @@ public class BreadthFirstSearch {
             } else if (agentIndex == 8) {
                 directions = "l, u";
             }
+
+        } else if (gridDimension == 4) {
+            
         }
 
         return directions;
     }
 
+    @SuppressWarnings("Duplicates")
     protected Node generateNode(String direction, Node currentNode) {
 
         //System.out.println("Agent index before: "+ agentIndex);
         int moveDifference = 0;
-        String[] newState = currentNode.getState();
+        String[] newState = currentNode.getState().clone();
 
         int agentIndex = currentNode.getAgentIndex();
-        System.out.println("Agent index is: " + agentIndex);
+        //System.out.println("Agent index is: " + agentIndex);
         // The move difference for up and down is the grid dimension
         if (direction.equals("l")) {
             moveDifference = -1;
@@ -112,7 +114,9 @@ public class BreadthFirstSearch {
         } else if (direction.equals("d")) {
             moveDifference = gridDimension;
         }
-        System.out.println("Direction: " + direction + " - move difference: " + moveDifference);
+
+
+       // System.out.println("Direction: " + direction + " - move difference: " + moveDifference);
         String temp = newState[agentIndex];
 //        System.out.println("agent index value before is: " + temp);
 //        System.out.println("block of move is: " + newState[agentIndex + moveDifference]);
@@ -125,7 +129,7 @@ public class BreadthFirstSearch {
 //        System.out.println("------");
 
         agentIndex = agentIndex + moveDifference;
-        System.out.println("Agent index after is: " + agentIndex);
+        //System.out.println("Agent index after is: " + agentIndex);
 
         //System.out.println("Agent index after: "+ agentIndex);
         return new Node(newState, agentIndex);
@@ -135,7 +139,8 @@ public class BreadthFirstSearch {
 
     protected void compute() {
 
-        String[] currentState;
+        //String[] currentState;
+        noOfNodesExpanded = 0;
 
         Node currentNode = this.startNode;
 
@@ -158,10 +163,10 @@ public class BreadthFirstSearch {
             System.out.println("---------------");
             grid.updateGrid(currentNode.getState());
             grid.printGrid(currentNode.getAgentIndex());
-            System.out.println("ACTUAL AGENT INDEX IS: " + currentNode.getAgentIndex());
-            System.out.println("-------");
-            System.out.println(Arrays.toString(currentNode.getState()));
-            System.out.println("-------");
+            //System.out.println("ACTUAL AGENT INDEX IS: " + currentNode.getAgentIndex());
+            //System.out.println("-------");
+            //System.out.println(Arrays.toString(currentNode.getState()));
+            //System.out.println("-------");
 //            for (Node node : stateQueue) {
 //                System.out.println(Arrays.toString(node.getState()));
 //            }
@@ -176,11 +181,14 @@ public class BreadthFirstSearch {
                 for (String direction : directions) {
                     //System.out.println(direction);
                     stateQueue.add(generateNode(direction, currentNode));
+                    noOfNodesExpanded++;
                 }
 
             }
 
         }
+
+        System.out.println("Number of nodes expanded: " + noOfNodesExpanded);
     }
 
 }
