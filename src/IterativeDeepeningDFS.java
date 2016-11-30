@@ -22,6 +22,7 @@ public class IterativeDeepeningDFS {
         random = new Random();
     }
 
+    @SuppressWarnings("Duplicates")
     protected List<String> getDirections(int agentIndex) {
         String[] directions = {};
 
