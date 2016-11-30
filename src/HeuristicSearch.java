@@ -349,7 +349,7 @@ public class HeuristicSearch {
 
         // Checks if the initial state and the final state are the same
         if (Arrays.equals(startNode.getState(), goalState)) {
-            this.grid.printGrid(currentNode.getAgentIndex());
+            this.grid.printGrid(currentNode.getAgentIndex(), currentNode.getState());
             return;
         }
 
@@ -402,14 +402,24 @@ public class HeuristicSearch {
         }
 
         System.out.println("Final number of nodes expanded: " + noOfNodesExpanded);
-        grid.updateGrid(currentNode.getState());
-        grid.printGrid(currentNode.getAgentIndex());
+        //grid.updateGrid(currentNode.getState());
+        //grid.printGrid(currentNode.getAgentIndex());
 
         ArrayList<String> direction = new ArrayList<>();
+        ArrayList<Node> nodes = new ArrayList<>();
         while(currentNode.getParentNode() != null) {
+            nodes.add(0, currentNode);
             direction.add(0, currentNode.getDirection());
             currentNode = currentNode.getParentNode();
         }
+        nodes.add(0, currentNode);
+
+        for(Node node : nodes) {
+            grid.printGrid(node.getAgentIndex(), node.getState());
+            System.out.println("---------");
+        }
+
+        //grid.printGrid(currentNode.getAgentIndex(), currentNode.getState());
 
         System.out.println(Arrays.toString(direction.toArray()));
         System.out.println("Amount of steps: " + direction.size());

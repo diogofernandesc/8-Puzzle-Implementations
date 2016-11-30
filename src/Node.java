@@ -22,6 +22,12 @@ public class Node {
         this.parentNode = parentNode;
     }
 
+    public Node(String[] state, int agentIndex, Node parentNode) {
+        this.state = state;
+        this.agentIndex = agentIndex;
+        this.parentNode = parentNode;
+    }
+
     public String[] getState() {
         return state;
     }

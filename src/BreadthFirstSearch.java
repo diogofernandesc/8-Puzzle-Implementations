@@ -20,38 +20,6 @@ public class BreadthFirstSearch {
 
     }
 
-    /*
-     * 1 = Up
-     * 2 = Down
-     * 3 = Left
-     * 4 = Right
-
-     agentIndex is the location that the agent is in at the moment of the move
-     */
-
-//    protected String[] agentMove(String[] currentState) {
-//
-//        if
-//        int directionValue = random.nextInt(4);
-//        String direction = null;
-//
-//        if (directionValue == 1) {
-//            if
-//            direction ="up";
-//
-//        } else if (directionValue == 2) {
-//            direction = "down";
-//
-//        } else if (directionValue == 3) {
-//            direction = "left";
-//
-//        } else if (directionValue == 4) {
-//            direction = "right";
-//        }
-//
-//        return direction;
-//    }
-
     // Determines all the possible moving directions
     protected String getDirections(int agentIndex) {
         String directions = null;
@@ -179,7 +147,7 @@ public class BreadthFirstSearch {
         //System.out.println("Agent index after is: " + agentIndex);
 
         //System.out.println("Agent index after: "+ agentIndex);
-        return new Node(newState, agentIndex);
+        return new Node(newState, agentIndex, currentNode);
     }
 
 
@@ -193,7 +161,7 @@ public class BreadthFirstSearch {
 
         // Checks if the initial state and the final state are the same
         if (Arrays.equals(startNode.getState(), goalState)) {
-            this.grid.printGrid(currentNode.getAgentIndex());
+            this.grid.printGrid(currentNode.getAgentIndex(), currentNode.getState());
             return;
         }
 
@@ -207,9 +175,9 @@ public class BreadthFirstSearch {
         while(!stateQueue.isEmpty()) {
 
             currentNode = stateQueue.remove();
-            System.out.println("---------------");
-            grid.updateGrid(currentNode.getState());
-            grid.printGrid(currentNode.getAgentIndex());
+            //System.out.println("---------------");
+            //grid.updateGrid(currentNode.getState());
+            //grid.printGrid(currentNode.getAgentIndex());
             //System.out.println("ACTUAL AGENT INDEX IS: " + currentNode.getAgentIndex());
             //System.out.println("-------");
             //System.out.println(Arrays.toString(currentNode.getState()));
@@ -226,9 +194,11 @@ public class BreadthFirstSearch {
 
                 String[] directions = getDirections(currentNode.getAgentIndex()).split(", ");
                 for (String direction : directions) {
-                    stateQueue.add(generateNode(direction, currentNode));
+                    Node newNode = generateNode(direction, currentNode);
+                    newNode.setDirection(direction);
+                    stateQueue.add(newNode);
                     noOfNodesExpanded++;
-                    System.out.println("Number of nodes expanded so far: " + noOfNodesExpanded);
+                    //System.out.println("Number of nodes expanded so far: " + noOfNodesExpanded);
                 }
 
             }
@@ -236,6 +206,27 @@ public class BreadthFirstSearch {
         }
 
         System.out.println("Final number of nodes expanded: " + noOfNodesExpanded);
+        //grid.updateGrid(currentNode.getState());
+        //grid.printGrid(currentNode.getAgentIndex());
+
+        ArrayList<String> direction = new ArrayList<>();
+        ArrayList<Node> nodes = new ArrayList<>();
+        while(currentNode.getParentNode() != null) {
+            nodes.add(0, currentNode);
+            direction.add(0, currentNode.getDirection());
+            currentNode = currentNode.getParentNode();
+        }
+        nodes.add(0, currentNode);
+
+        for(Node node : nodes) {
+            grid.printGrid(node.getAgentIndex(), node.getState());
+            System.out.println("---------");
+        }
+
+        //grid.printGrid(currentNode.getAgentIndex(), currentNode.getState());
+
+        System.out.println(Arrays.toString(direction.toArray()));
+        System.out.println("Amount of steps: " + direction.size());
     }
 
 }

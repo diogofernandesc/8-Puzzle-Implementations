@@ -26,7 +26,8 @@ public class Grid {
         gridArray = newState;
     }
 
-    protected void printGrid(int agentIndex) {
+    protected void printGrid(int agentIndex, String[] state) {
+        gridArray = state;
         int gridTile = 0;
         for(int i = 0; i < length; i++) {
             for(int j = 0; j < width; j++) {
