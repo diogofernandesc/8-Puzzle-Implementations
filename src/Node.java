@@ -6,6 +6,7 @@ public class Node {
     String[] state;
     int agentIndex;
     int depth;
+    int estimatedCostToGoal;
 
     public Node(String[] state, int agentIndex) {
         this.state = state;
@@ -30,4 +31,11 @@ public class Node {
         return depth;
     }
 
+    public void setEstimatedCostToGoal(int estimatedCostToGoal) {
+        this.estimatedCostToGoal = estimatedCostToGoal;
+    }
+
+    public int getEstimatedCostToGoal() {
+        return estimatedCostToGoal;
+    }
 }
