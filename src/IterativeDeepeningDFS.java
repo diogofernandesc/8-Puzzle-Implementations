@@ -148,7 +148,7 @@ public class IterativeDeepeningDFS {
         //System.out.println("Agent index after is: " + agentIndex);
 
         //    //System.out.println("Agent index after: "+ agentIndex);
-        return new Node(newState, agentIndex, depth);
+        return new Node(newState, agentIndex, depth, currentNode);
     }
 
     @SuppressWarnings("Duplicates")
@@ -181,9 +181,9 @@ public class IterativeDeepeningDFS {
             while (!stateStack.isEmpty()) {
 
                 currentNode = stateStack.pop();
-                System.out.println("---------------");
-                grid.updateGrid(currentNode.getState());
-                grid.printGrid(currentNode.getAgentIndex());
+                //System.out.println("---------------");
+                //grid.updateGrid(currentNode.getState());
+                //grid.printGrid(currentNode.getAgentIndex());
                 //System.out.println("ACTUAL AGENT INDEX IS: " + currentNode.getAgentIndex());
                 //System.out.println("-------");
                 //System.out.println(Arrays.toString(currentNode.getState()));
@@ -202,14 +202,15 @@ public class IterativeDeepeningDFS {
 
                         List<String> directions = getDirections(currentNode.getAgentIndex());
                         for (String direction : directions) {
-                            stateStack.push(generateNode(direction, currentNode, currentNode.getDepth() + 1));
+                            Node newNode = generateNode(direction, currentNode, currentNode.getDepth() + 1);
+                            newNode.setDirection(direction);
+                            stateStack.push(newNode);
                             noOfNodesExpanded++;
-                            System.out.println("Number of nodes expanded so far: " + noOfNodesExpanded);
+                            //ystem.out.println("Number of nodes expanded so far: " + noOfNodesExpanded);
 
                         }
 
                     }
-
 
                 }
 
@@ -218,7 +219,17 @@ public class IterativeDeepeningDFS {
             maxDepth++;
         }
 
-
         System.out.println("Final number of nodes expanded: " + noOfNodesExpanded);
+        grid.updateGrid(currentNode.getState());
+        grid.printGrid(currentNode.getAgentIndex());
+
+        ArrayList<String> direction = new ArrayList<>();
+        while(currentNode.getParentNode() != null) {
+            direction.add(0, currentNode.getDirection());
+            currentNode = currentNode.getParentNode();
+        }
+
+        System.out.println(Arrays.toString(direction.toArray()));
+        System.out.println("Amount of steps: " + direction.size());
     }
 }

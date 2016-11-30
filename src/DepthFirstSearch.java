@@ -204,7 +204,7 @@ public class DepthFirstSearch {
                 for (String direction : directions) {
                     stateStack.add(generateNode(direction, currentNode));
                     noOfNodesExpanded++;
-                    System.out.println("Number of nodes expanded so far: " + noOfNodesExpanded);
+                    //System.out.println("Number of nodes expanded so far: " + noOfNodesExpanded);
                 }
 
             }
@@ -212,5 +212,16 @@ public class DepthFirstSearch {
         }
 
         System.out.println("Final number of nodes expanded: " + noOfNodesExpanded);
+        grid.updateGrid(currentNode.getState());
+        grid.printGrid(currentNode.getAgentIndex());
+
+        ArrayList<String> direction = new ArrayList<>();
+        while(currentNode.getParentNode() != null) {
+            direction.add(0, currentNode.getDirection());
+            currentNode = currentNode.getParentNode();
+        }
+
+        System.out.println(Arrays.toString(direction.toArray()));
+        System.out.println("Amount of steps: " + direction.size());
     }
 }

@@ -119,8 +119,94 @@ public class HeuristicSearch {
         return directions;
     }
 
+//    protected List<String> getDirections(int agentIndex) {
+//        String[] directions = {};
+//
+//        if (gridDimension == 3) {
+//            if (agentIndex == 0) {
+//                directions = new String[]{"r", "d"};
+//
+//            } else if (agentIndex == 1) {
+//                directions = new String[]{"l", "r", "d"};
+//
+//            } else if (agentIndex == 2) {
+//                directions = new String[]{"l", "d"};
+//
+//            } else if (agentIndex == 3) {
+//                directions = new String[]{"r", "u", "d"};
+//
+//            } else if (agentIndex == 4) {
+//                directions = new String[]{"l", "r", "u", "d"};
+//
+//            } else if (agentIndex == 5) {
+//                directions = new String[]{"l", "u", "d"};
+//
+//            } else if (agentIndex == 6) {
+//                directions = new String[]{"r", "u"};
+//
+//            } else if (agentIndex == 7) {
+//                directions = new String[]{"l", "r", "u"};
+//
+//            } else if (agentIndex == 8) {
+//                directions = new String[]{"l", "u"};
+//            }
+//        } else if (gridDimension == 4) {
+//            if (agentIndex == 0) {
+//                directions = new String[]{"r", "d"};
+//
+//            } else if (agentIndex == 1) {
+//                directions = new String[]{"l", "r", "d"};
+//
+//            } else if (agentIndex == 2) {
+//                directions = new String[]{"l", "r", "d"};
+//
+//            } else if (agentIndex == 3) {
+//                directions = new String[]{"l", "d"};
+//
+//            } else if (agentIndex == 4) {
+//                directions = new String[]{"r", "u", "d"};
+//
+//            } else if (agentIndex == 5) {
+//                directions = new String[]{"l", "r", "u", "d"};
+//
+//            } else if (agentIndex == 6) {
+//                directions = new String[]{"l", "r", "u", "d"};
+//
+//            } else if (agentIndex == 7) {
+//                directions = new String[]{"l", "u", "d"};
+//
+//            } else if (agentIndex == 8) {
+//                directions = new String[]{"r", "u", "d"};
+//
+//            } else if (agentIndex == 9) {
+//                directions = new String[]{"l", "r", "u", "d"};
+//
+//            } else if (agentIndex == 10) {
+//                directions = new String[]{"l", "r", "u", "d"};
+//
+//            } else if (agentIndex == 11) {
+//                directions = new String[]{"l", "u", "d"};
+//
+//            } else if (agentIndex == 12) {
+//                directions = new String[]{"r", "u"};
+//
+//            } else if (agentIndex == 13) {
+//                directions = new String[]{"l", "r", "u"};
+//
+//            } else if (agentIndex == 14) {
+//                directions = new String[]{"l", "r", "u"};
+//
+//            } else if (agentIndex == 15) {
+//                directions = new String[]{"l", "u"};
+//            }
+//        }
+//        List<String> directionsList = Arrays.asList(directions);
+//        Collections.shuffle(directionsList); // Shuffle the listen to randomise order
+//        return directionsList;
+//    }
+
     @SuppressWarnings("Duplicates")
-    protected Node generateNode(String direction, Node currentNode) {
+    protected Node generateNode(String direction, Node currentNode, int depth) {
 
         //System.out.println("Agent index before: "+ agentIndex);
         int moveDifference = 0;
@@ -158,7 +244,7 @@ public class HeuristicSearch {
         //System.out.println("Agent index after is: " + agentIndex);
 
         //    //System.out.println("Agent index after: "+ agentIndex);
-        return new Node(newState, agentIndex);
+        return new Node(newState, agentIndex, depth, currentNode);
     }
 
     protected void estimateFutureCost(Node node) {
@@ -207,7 +293,12 @@ public class HeuristicSearch {
 
         // f(n) = g(n) + h(n)
         // Where g(n) is the depth of the node and h(n) is the cost just calculated
-
+        //System.out.println(cost);
+//        try {
+//            Thread.sleep(100);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         node.setEstimatedCostToGoal(node.getDepth() + cost);
 
     }
@@ -277,9 +368,9 @@ public class HeuristicSearch {
         while(!priorityQueue.isEmpty()) {
 
             currentNode = priorityQueue.remove();
-            System.out.println("---------------");
-            grid.updateGrid(currentNode.getState());
-            grid.printGrid(currentNode.getAgentIndex());
+            //System.out.println("---------------");
+//            grid.updateGrid(currentNode.getState());
+//            grid.printGrid(currentNode.getAgentIndex());
             //System.out.println("ACTUAL AGENT INDEX IS: " + currentNode.getAgentIndex());
             //System.out.println("-------");
             //System.out.println(Arrays.toString(currentNode.getState()));
@@ -296,18 +387,32 @@ public class HeuristicSearch {
 
                 String[] directions = getDirections(currentNode.getAgentIndex()).split(", ");
                 for (String direction : directions) {
-                    Node newNode = generateNode(direction, currentNode);
+                    Node newNode = generateNode(direction, currentNode, currentNode.getDepth() + 1);
+                    newNode.setDirection(direction);
                     estimateFutureCost(newNode);
                     priorityQueue.add(newNode);
                     noOfNodesExpanded++;
-                    System.out.println("Number of nodes expanded so far: " + noOfNodesExpanded);
+                    //System.out.println("Number of nodes expanded so far: " + noOfNodesExpanded);
                 }
 
             }
 
+            System.out.println("Current cost: "+ currentNode.getDepth());
+            System.out.println("Future cost: " + currentNode.getEstimatedCostToGoal());
         }
 
         System.out.println("Final number of nodes expanded: " + noOfNodesExpanded);
+        grid.updateGrid(currentNode.getState());
+        grid.printGrid(currentNode.getAgentIndex());
+
+        ArrayList<String> direction = new ArrayList<>();
+        while(currentNode.getParentNode() != null) {
+            direction.add(0, currentNode.getDirection());
+            currentNode = currentNode.getParentNode();
+        }
+
+        System.out.println(Arrays.toString(direction.toArray()));
+        System.out.println("Amount of steps: " + direction.size());
     }
 }
 

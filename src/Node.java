@@ -7,16 +7,19 @@ public class Node {
     int agentIndex;
     int depth;
     int estimatedCostToGoal;
+    Node parentNode;
+    String direction;
 
     public Node(String[] state, int agentIndex) {
         this.state = state;
         this.agentIndex = agentIndex;
     }
 
-    public Node(String[] state, int agentIndex, int depth) {
+    public Node(String[] state, int agentIndex, int depth, Node parentNode) {
         this.state = state;
         this.agentIndex = agentIndex;
         this.depth = depth;
+        this.parentNode = parentNode;
     }
 
     public String[] getState() {
@@ -37,5 +40,17 @@ public class Node {
 
     public int getEstimatedCostToGoal() {
         return estimatedCostToGoal;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+
+    public Node getParentNode() {
+        return parentNode;
     }
 }
